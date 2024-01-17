@@ -1,0 +1,32 @@
+INSERT INTO tb_contact(first_name, last_name) VALUES ('Ayrton', 'Senna');
+INSERT INTO tb_contact(first_name, last_name) VALUES ('Leonardo', 'da Vinci');
+INSERT INTO tb_contact(first_name, last_name) VALUES ('Indira', 'Gandhi');
+INSERT INTO tb_contact(first_name, last_name) VALUES ('Mahatma', 'Gandhi');
+INSERT INTO tb_contact(first_name, last_name) VALUES ('Muhammad', 'Ali');
+INSERT INTO tb_contact(first_name, last_name) VALUES ('Gandalf', 'Istari');
+INSERT INTO tb_contact(first_name, last_name) VALUES ('Nikola', 'Tesla');
+INSERT INTO tb_contact(first_name, last_name) VALUES ('Arnold', 'Armstrong');
+INSERT INTO tb_contact(first_name, last_name) VALUES ('Bojack', 'Horseman');
+INSERT INTO tb_contact(first_name, last_name) VALUES ('Nelson', 'Mandela');
+
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 1);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 2);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 3);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 4);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 5);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 6);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 7);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 8);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 9);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 10);
+
+INSERT INTO tb_address(zip_code, street, address_number, city, state, contact_id) VALUES (123456798, 'João Naves', 340, 'Uberlândia', 'MG', 1);
+INSERT INTO tb_address(zip_code, street, address_number, city, state, contact_id) VALUES (987654321, 'João Balbino', 500, 'Uberaba', 'MT', 2);
+INSERT INTO tb_address(zip_code, street, address_number, city, state, contact_id) VALUES (876543210, 'Jorge Martins', 200, 'Itumbiara', 'MS', 3);
+INSERT INTO tb_address(zip_code, street, address_number, city, state, contact_id) VALUES (765432109, 'Segismundo Pereira', 1000, 'Ouro Preto', 'SP', 4);
+INSERT INTO tb_address(zip_code, street, address_number, city, state, contact_id) VALUES (654321098, 'Rondom Pacheco', 790, 'Araguari', 'RJ', 5);
+INSERT INTO tb_address(zip_code, street, address_number, city, state, contact_id) VALUES (543210987, 'Moeda de Ouro', 450, 'São Paulo', 'PR', 6);
+INSERT INTO tb_address(zip_code, street, address_number, city, state, contact_id) VALUES (432109876, 'Gertulio Vargas', 690, 'Barreiras', 'TO', 7);
+INSERT INTO tb_address(zip_code, street, address_number, city, state, contact_id) VALUES (321098765, 'Belarmino Cotta Pacheco', 230, 'Ilheus', 'AM', 8);
+INSERT INTO tb_address(zip_code, street, address_number, city, state, contact_id) VALUES (210987654, 'Anselmo Alvez', 870, 'Araxa', 'CE', 9);
+INSERT INTO tb_address(zip_code, street, address_number, city, state, contact_id) VALUES (567890123, 'Antônio Zefferino de Paula', 750, 'Vitoria', 'PA', 10);
