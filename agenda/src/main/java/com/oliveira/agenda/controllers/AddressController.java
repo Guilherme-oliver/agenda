@@ -1,8 +1,8 @@
 package com.oliveira.agenda.controllers;
 
-import com.oliveira.agenda.controllers.request.ContactRequest;
-import com.oliveira.agenda.controllers.response.ContactResponse;
-import com.oliveira.agenda.services.ContactService;
+import com.oliveira.agenda.controllers.request.AddressRequest;
+import com.oliveira.agenda.controllers.response.AddressResponse;
+import com.oliveira.agenda.services.AddressService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,47 +14,47 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping(value = "/contacts")
-public class ContactController {
+@RequestMapping(value = "/address")
+public class AddressController {
 
     @Autowired
-    private ContactService contactService;
+    private AddressService addressService;
 
-    public ContactController(ContactService contactService) {
-        this.contactService = contactService;
+    public AddressController(AddressService addressService) {
+        this.addressService = addressService;
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ContactResponse> findById(@PathVariable Long id) {
-        ContactResponse dto = contactService.findById(id);
+    public ResponseEntity<AddressResponse> findById(@PathVariable Long id) {
+        AddressResponse dto = addressService.findById(id);
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping
-    public ResponseEntity<Page<ContactResponse>> findAll(
+    public ResponseEntity<Page<AddressResponse>> findAll(
             @RequestParam(name = "name", defaultValue = "") String name,
             Pageable pageable) {
-        Page<ContactResponse> dto = contactService.findAll(name, pageable);
+        Page<AddressResponse> dto = addressService.findAll(name, pageable);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<ContactResponse> insert(@Valid @RequestBody ContactRequest response) {
-        var dto = contactService.insert(response);
+    public ResponseEntity<AddressResponse> insert(@Valid @RequestBody AddressRequest request) {
+        var dto = addressService.insert(request);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(response.getId()).toUri();
+                .buildAndExpand(request.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ContactResponse> update(@PathVariable Long id, @Valid @RequestBody ContactRequest response) {
-        var dto = contactService.update(id, response);
+    public ResponseEntity<AddressResponse> update(@PathVariable Long id, @Valid @RequestBody AddressRequest request) {
+        var dto = addressService.update(id, request);
         return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        contactService.delete(id);
+        addressService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
