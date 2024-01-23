@@ -6,18 +6,15 @@ public class PhoneResponse {
 
     private Integer ddd;
     private Integer phoneNumber;
-    private ContactResponse contactResponse;
 
-    public PhoneResponse(Integer ddd, Integer phoneNumber, ContactResponse contactResponse) {
+    public PhoneResponse(Integer ddd, Integer phoneNumber) {
         this.ddd = ddd;
         this.phoneNumber = phoneNumber;
-        this.contactResponse = contactResponse;
     }
 
     public PhoneResponse(Phone phone) {
         ddd = phone.getDdd();
         phoneNumber = phone.getPhoneNumber();
-        contactResponse = new ContactResponse(phone.getContact());
     }
 
     public Integer getDdd() {
@@ -34,13 +31,5 @@ public class PhoneResponse {
 
     public void setPhoneNumber(Integer phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public ContactResponse getContactResponse() {
-        return contactResponse;
-    }
-
-    public void setContactResponse(ContactResponse contactResponse) {
-        this.contactResponse = contactResponse;
     }
 }

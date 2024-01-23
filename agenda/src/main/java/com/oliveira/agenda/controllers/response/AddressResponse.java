@@ -9,18 +9,13 @@ public class AddressResponse {
     private Integer addressNumber;
     private String city;
     private String state;
-    private ContactResponse contactResponse;
 
-    public AddressResponse() {
-    }
-
-    public AddressResponse(Long id, Long zipCode, String street, Integer addressNumber, String city, String state, ContactResponse contactResponse) {
+    public AddressResponse(Long zipCode, String street, Integer addressNumber, String city, String state) {
         this.zipCode = zipCode;
         this.street = street;
         this.addressNumber = addressNumber;
         this.city = city;
         this.state = state;
-        this.contactResponse = contactResponse;
     }
 
     public AddressResponse(Address entity) {
@@ -29,7 +24,6 @@ public class AddressResponse {
         addressNumber = entity.getAddressNumber();
         city = entity.getCity();
         state = entity.getState();
-        contactResponse = new ContactResponse(entity.getContact());
     }
 
     public Long getZipCode() {
@@ -70,13 +64,5 @@ public class AddressResponse {
 
     public void setState(String state) {
         this.state = state;
-    }
-
-    public ContactResponse getContactResponse() {
-        return contactResponse;
-    }
-
-    public void setContactResponse(ContactResponse contactResponse) {
-        this.contactResponse = contactResponse;
     }
 }

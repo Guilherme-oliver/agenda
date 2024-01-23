@@ -9,16 +9,16 @@ INSERT INTO tb_contact(first_name, last_name) VALUES ('Arnold', 'Armstrong');
 INSERT INTO tb_contact(first_name, last_name) VALUES ('Bojack', 'Horseman');
 INSERT INTO tb_contact(first_name, last_name) VALUES ('Nelson', 'Mandela');
 
-INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 1);
-INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 2);
-INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 3);
-INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 4);
-INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 5);
-INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 6);
-INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 7);
-INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 8);
-INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 9);
-INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456798, 10);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 123456789, 1);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 321654987, 2);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 456123789, 3);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 789456123, 4);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 654988732, 5);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 963852741, 6);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 741852963, 7);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 369258147, 8);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 753421869, 9);
+INSERT INTO tb_phone(ddd, phone_number, contact_id) VALUES (34, 357689241, 10);
 
 INSERT INTO tb_address(zip_code, street, address_number, city, state, contact_id) VALUES (123456798, 'João Naves', 340, 'Uberlândia', 'MG', 1);
 INSERT INTO tb_address(zip_code, street, address_number, city, state, contact_id) VALUES (987654321, 'João Balbino', 500, 'Uberaba', 'MT', 2);

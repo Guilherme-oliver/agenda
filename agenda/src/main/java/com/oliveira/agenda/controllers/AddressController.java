@@ -9,9 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/address")
@@ -19,10 +16,6 @@ public class AddressController {
 
     @Autowired
     private AddressService addressService;
-
-    public AddressController(AddressService addressService) {
-        this.addressService = addressService;
-    }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<AddressResponse> findById(@PathVariable Long id) {
@@ -36,14 +29,6 @@ public class AddressController {
             Pageable pageable) {
         Page<AddressResponse> dto = addressService.findAll(name, pageable);
         return ResponseEntity.ok(dto);
-    }
-
-    @PostMapping
-    public ResponseEntity<AddressResponse> insert(@Valid @RequestBody AddressRequest request) {
-        var dto = addressService.insert(request);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(request.getId()).toUri();
-        return ResponseEntity.created(uri).body(dto);
     }
 
     @PutMapping(value = "/{id}")

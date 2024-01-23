@@ -1,43 +1,44 @@
 package com.oliveira.agenda.controllers.request;
 
 import com.oliveira.agenda.entities.Address;
+import jakarta.validation.constraints.*;
 
 public class AddressRequest {
 
-    private Long id;
+    @NotNull(message = "Required field")
+    @Positive(message = "The zip code must be positive")
     private Long zipCode;
-    private String street;
-    private Integer addressNumber;
-    private String city;
-    private String state;
-    private ContactRequest contactRequest;
 
-    public AddressRequest(Long id, Long zipCode, String street, Integer addressNumber, String city, String state, ContactRequest contactRequest) {
-        this.id = id;
+    @Size(min = 3)
+    @NotBlank(message = "Description must have at least 3 characters")
+    private String street;
+
+    @NotNull(message = "Required field")
+    @Positive(message = "The address number must be positive")
+    private Integer addressNumber;
+
+    @Size(min = 3)
+    @NotBlank(message = "City must have at least 3 characters")
+    private String city;
+
+    @Size(min = 2)
+    @NotBlank(message = "State must have at least 2 characters")
+    private String state;
+
+    public AddressRequest(Long zipCode, String street, Integer addressNumber, String city, String state) {
         this.zipCode = zipCode;
         this.street = street;
         this.addressNumber = addressNumber;
         this.city = city;
         this.state = state;
-        this.contactRequest = contactRequest;
     }
 
     public AddressRequest(Address entity) {
-        id = entity.getId();
         zipCode = entity.getZipCode();
         street = entity.getStreet();
         addressNumber = entity.getAddressNumber();
         city = entity.getCity();
         state = entity.getState();
-        contactRequest = new ContactRequest(entity.getContact());
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getZipCode() {
@@ -78,13 +79,5 @@ public class AddressRequest {
 
     public void setState(String state) {
         this.state = state;
-    }
-
-    public ContactRequest getContactRequest() {
-        return contactRequest;
-    }
-
-    public void setContactRequest(ContactRequest contactRequest) {
-        this.contactRequest = contactRequest;
     }
 }

@@ -21,60 +21,51 @@ import java.util.Optional;
 @Service
 public class PhoneService {
 
-    private PhoneRepository phoneRepository;
-
     @Autowired
-    private ContactService contactService;
-
-    public PhoneService(PhoneRepository phoneRepository) {
-        this.phoneRepository = phoneRepository;
-    }
+    private PhoneRepository phoneRepository;
 
     @Transactional(readOnly = true)
     public PhoneResponse findById(Long id) {
-        Phone phone = phoneRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Resource not found!"));
-        return new PhoneResponse(phone);
+        Phone product = phoneRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Resource not Found!"));
+        return new PhoneResponse(product);
     }
 
     @Transactional(readOnly = true)
     public Page<PhoneResponse> findAll(Integer phoneNumber, Pageable pageable) {
-        Page<Phone> phones = phoneRepository.searchByPhoneNumber(phoneNumber, pageable);
-        return phones.map(x -> new PhoneResponse(x));
-    }
-
-    private void copyDtoToEntity(PhoneRequest request, Phone entity) {
-        entity.setDdd(request.getDdd());
-        entity.setPhoneNumber(request.getPhoneNumber());
+        Page<Phone> result = phoneRepository.searchByPhoneNumber(phoneNumber, pageable);
+        return result.map(x -> new PhoneResponse(x));
     }
 
     @Transactional
-    public PhoneResponse insert(PhoneRequest request) {
-        Optional<Phone> phone = phoneRepository.existingContact(request.getDdd(), request.getPhoneNumber());
+    public PhoneResponse insert(Contact contact, PhoneRequest dto) {
+        Optional<Phone> phone = phoneRepository.existingContact(dto.getDdd(), dto.getPhoneNumber());
         if (phone.isPresent()) {
             throw new RuntimeException("Phone already exist!");
-        }
-        try {
-            Contact contact = contactService.findById(request.getContactRequest().getId()).toContact();
+        } else {
             Phone entity = new Phone();
-            copyDtoToEntity(request, entity);
+            copyDtoToEntity(dto, entity);
+            entity.setContact(contact);
             entity = phoneRepository.save(entity);
             return new PhoneResponse(entity);
-        }catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 
     @Transactional
-    public PhoneResponse update(Long id, PhoneRequest response) {
+    public PhoneResponse update(Long id, PhoneRequest dto) {
         try {
             Phone entity = phoneRepository.getReferenceById(id);
-            copyDtoToEntity(response, entity);
+            copyDtoToEntity(dto, entity);
             entity = phoneRepository.save(entity);
             return new PhoneResponse(entity);
         } catch (EntityNotFoundException e) {
-            throw new  ResourceNotFoundException("Resource not found!");
+            throw new ResourceNotFoundException("Resource not found!");
         }
+    }
+
+    private void copyDtoToEntity(PhoneRequest dto, Phone entity) {
+        entity.setDdd(dto.getDdd());
+        entity.setPhoneNumber(dto.getPhoneNumber());
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)

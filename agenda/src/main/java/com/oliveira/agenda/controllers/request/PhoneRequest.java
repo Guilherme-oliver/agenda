@@ -1,34 +1,26 @@
 package com.oliveira.agenda.controllers.request;
 
 import com.oliveira.agenda.entities.Phone;
+import jakarta.validation.constraints.*;
 
 public class PhoneRequest {
 
-    private Long id;
+    @Digits(integer = 2, fraction = 0, message = "Phone number must be a valid number with up to 2 digits.")
+    @NotNull(message = "Required field")
     private Integer ddd;
-    private Integer phoneNumber;
-    private ContactRequest contactRequest;
 
-    public PhoneRequest(Long id,Integer ddd, Integer phoneNumber, ContactRequest contactRequest) {
-        this.id = id;
+    @Digits(integer = 9, fraction = 0, message = "Phone number must be a valid number with up to 10 digits.")
+    @NotNull(message = "Required field")
+    private Integer phoneNumber;
+
+    public PhoneRequest(Integer ddd, Integer phoneNumber) {
         this.ddd = ddd;
         this.phoneNumber = phoneNumber;
-        this.contactRequest = contactRequest;
     }
 
     public PhoneRequest(Phone phone) {
-        id = phone.getId();
         ddd = phone.getDdd();
         phoneNumber = phone.getPhoneNumber();
-        contactRequest = new ContactRequest(phone.getContact());
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Integer getDdd() {
@@ -45,13 +37,5 @@ public class PhoneRequest {
 
     public void setPhoneNumber(Integer phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public ContactRequest getContactRequest() {
-        return contactRequest;
-    }
-
-    public void setContactRequest(ContactRequest contactRequest) {
-        this.contactRequest = contactRequest;
     }
 }

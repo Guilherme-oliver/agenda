@@ -1,7 +1,8 @@
 package com.oliveira.agenda.controllers.response;
 
+import com.oliveira.agenda.entities.Address;
 import com.oliveira.agenda.entities.Contact;
-import org.springframework.beans.BeanUtils;
+import com.oliveira.agenda.entities.Phone;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +15,6 @@ public class ContactResponse {
     private List<AddressResponse> addresses = new ArrayList<>();
     private List<PhoneResponse> phones = new ArrayList<>();
 
-    public ContactResponse() {
-    }
-
     public ContactResponse(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -25,12 +23,12 @@ public class ContactResponse {
     public ContactResponse(Contact entity) {
         firstName = entity.getFirstName();
         lastName = entity.getLastName();
-    }
-
-    public Contact toContact() {
-        Contact contact = new Contact();
-        BeanUtils.copyProperties(this, contact);
-        return contact;
+        for (Address address : entity.getAddresses()) {
+            addresses.add(new AddressResponse(address));
+        }
+        for (Phone phone : entity.getPhones()) {
+            phones.add(new PhoneResponse(phone));
+        }
     }
 
     public String getFirstName() {

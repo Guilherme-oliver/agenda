@@ -1,6 +1,8 @@
 package com.oliveira.agenda.services;
 
+import com.oliveira.agenda.controllers.request.AddressRequest;
 import com.oliveira.agenda.controllers.request.ContactRequest;
+import com.oliveira.agenda.controllers.request.PhoneRequest;
 import com.oliveira.agenda.controllers.response.ContactResponse;
 import com.oliveira.agenda.entities.Address;
 import com.oliveira.agenda.entities.Contact;
@@ -9,7 +11,6 @@ import com.oliveira.agenda.repositories.ContactRepository;
 import com.oliveira.agenda.services.exceptions.DatabaseException;
 import com.oliveira.agenda.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,12 @@ public class ContactService {
 
     @Autowired
     private ContactRepository contactRepository;
+
+    @Autowired
+    private AddressService addressService;
+
+    @Autowired
+    private PhoneService phoneService;
 
     @Transactional(readOnly = true)
     public ContactResponse findById(Long id) {
@@ -58,29 +65,46 @@ public class ContactService {
         entity.setLastName(response.getLastName());
     }
 
+    @Transactional(readOnly = true)
+    public ContactResponse addNewAddress(Long id, AddressRequest request) {
+        Contact contact = contactRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Resource not found"));
+        addressService.insert(contact, request);
+        return new ContactResponse(contact);
+    }
+
+    @Transactional(readOnly = true)
+    public ContactResponse addNewPhone(Long id, PhoneRequest request) {
+        Contact contact = contactRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Resource not found"));
+        phoneService.insert(contact, request);
+        return new ContactResponse(contact);
+    }
+
     @Transactional
-    public ContactResponse insert(@Valid ContactRequest contactRequest) {
+    public ContactResponse insert(ContactRequest contactRequest) {
         Optional<Contact> contact = contactRepository.existingContact(contactRequest.getFirstName(), contactRequest.getLastName());
         if (contact.isPresent()) {
-            new Exception("Contact already exist");
-        }
-        try {
-            Contact entity = new Contact();
-            entity.setId(null);
-            copyDtoToEntity(contactRequest, entity);
+            throw new RuntimeException("Contact already exist!");
+        } else {
+            try {
+                Contact entity = new Contact();
+                entity.setId(null);
+                copyDtoToEntity(contactRequest, entity);
 
-            for (Address address : entity.getAddresses()) {
-                address.setContact(entity);
+                for (Address address : entity.getAddresses()) {
+                    address.setContact(entity);
+                }
+
+                for (Phone phone : entity.getPhones()) {
+                    phone.setContact(entity);
+                }
+
+                entity = contactRepository.save(entity);
+                return new ContactResponse(entity);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
-
-            for (Phone phone : entity.getPhones()) {
-                phone.setContact(entity);
-            }
-
-            entity = contactRepository.save(entity);
-            return new ContactResponse(entity);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 

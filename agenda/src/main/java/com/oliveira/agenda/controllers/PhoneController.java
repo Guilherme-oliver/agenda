@@ -9,9 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/phone")
@@ -19,10 +16,6 @@ public class PhoneController {
 
     @Autowired
     private PhoneService phoneService;
-
-    public PhoneController(PhoneService phoneService) {
-        this.phoneService = phoneService;
-    }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<PhoneResponse> findById(@PathVariable Long id) {
@@ -32,18 +25,10 @@ public class PhoneController {
 
     @GetMapping
     public ResponseEntity<Page<PhoneResponse>> findAll(
-            @RequestParam Integer phoneNumber,
+            @RequestParam(required = false) Integer phoneNumber,
             Pageable pageable) {
         Page<PhoneResponse> dto = phoneService.findAll(phoneNumber, pageable);
         return ResponseEntity.ok(dto);
-    }
-
-    @PostMapping
-    public ResponseEntity<PhoneResponse> insert(@Valid @RequestBody PhoneRequest request) {
-        var dto = phoneService.insert(request);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(request.getId()).toUri();
-        return ResponseEntity.created(uri).body(dto);
     }
 
     @PutMapping(value = "/{id}")
