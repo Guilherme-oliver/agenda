@@ -33,6 +33,7 @@ public class ContactService {
     @Autowired
     private PhoneService phoneService;
 
+    //Exibir todas as informações de um contato da agenda.
     @Transactional(readOnly = true)
     public ContactResponse findById(Long id) {
         Contact contact = contactRepository.findById(id).orElseThrow(
@@ -40,13 +41,17 @@ public class ContactService {
         return new ContactResponse(contact);
     }
 
+    // Buscar um contato de acordo com uma palavra-chave (Utilize os dados
+    //de nome, sobrenome para realizar a busca).
     @Transactional(readOnly = true)
-    public ContactResponse findByFistName(String firstName) {
+    public ContactResponse findByFirstName(String firstName) {
         Contact contact = contactRepository.searchByFirstName(firstName).orElseThrow(
                 () -> new ResourceNotFoundException("Resource not found"));
         return new ContactResponse(contact);
     }
 
+    //• Buscar um contato de acordo com uma palavra-chave (Utilize os dados
+    //de nome, sobrenome para realizar a busca).
     @Transactional(readOnly = true)
     public ContactResponse findByLastName(String lastName) {
         Contact contact = contactRepository.searchByLastName(lastName).orElseThrow(
@@ -54,9 +59,10 @@ public class ContactService {
         return new ContactResponse(contact);
     }
 
+    //Listar todos os contatos da agenda.
     @Transactional(readOnly = true)
-    public Page<ContactResponse> findAll(String name, Pageable pageable) {
-        Page<Contact> result = contactRepository.searchByName(name, pageable);
+    public Page<ContactResponse> findAll(Pageable pageable) {
+        Page<Contact> result = contactRepository.findAll(pageable);
         return result.map(x -> new ContactResponse(x));
     }
 
@@ -65,22 +71,46 @@ public class ContactService {
         entity.setLastName(response.getLastName());
     }
 
+    //Adicionar um endereço a um contato.
     @Transactional(readOnly = true)
     public ContactResponse addNewAddress(Long id, AddressRequest request) {
         Contact contact = contactRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Resource not found"));
+        if (contact.getAddresses().stream().anyMatch(t -> t.getZipCode().equals(request.getZipCode()))) {
+            throw new DatabaseException("The address number already exists for this contact");
+        }
+        Address address = new Address();
+        address.setId(request.getId());
+        address.setZipCode(request.getZipCode());
+        address.setAddressNumber(request.getAddressNumber());
+        address.setStreet(request.getStreet());
+        address.setCity(request.getCity());
+        address.setState(request.getState());
+        address.setContact(contact);
+        contact.getAddresses().add(address);
         addressService.insert(contact, request);
         return new ContactResponse(contact);
     }
 
+    //Adicionar um telefone a um contato.
     @Transactional(readOnly = true)
     public ContactResponse addNewPhone(Long id, PhoneRequest request) {
         Contact contact = contactRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Resource not found"));
+        if (contact.getPhones().stream().anyMatch(t -> t.getPhoneNumber().equals(request.getPhoneNumber()))) {
+            throw new DatabaseException("The phone number already exists for this contact");
+        }
+        Phone phone = new Phone();
+        phone.setId(request.getId());
+        phone.setDdd(request.getDdd());
+        phone.setPhoneNumber(request.getPhoneNumber());
+        phone.setContact(contact);
+        contact.getPhones().add(phone);
         phoneService.insert(contact, request);
         return new ContactResponse(contact);
     }
 
+    //Adicionar um contato e seus dados.
     @Transactional
     public ContactResponse insert(ContactRequest contactRequest) {
         Optional<Contact> contact = contactRepository.existingContact(contactRequest.getFirstName(), contactRequest.getLastName());
@@ -108,6 +138,7 @@ public class ContactService {
         }
     }
 
+    //Atualizar os dados de um contato.
     @Transactional
     public ContactResponse update(Long id, ContactRequest response) {
         try {
@@ -120,6 +151,7 @@ public class ContactService {
         }
     }
 
+    //Remover um contato da agenda.
     @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
         if (!contactRepository.existsById(id)) {
@@ -132,8 +164,25 @@ public class ContactService {
         }
     }
 
+    //Remover todos os contatos da agenda.
     @Transactional(propagation = Propagation.SUPPORTS)
     public void deleteAll() {
         contactRepository.deleteAll();
+    }
+
+    //Remover um telefone de um contato da agenda.
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void deletePhone(Long id, PhoneRequest request) {
+        Contact contact = contactRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Resource not found"));
+        phoneService.delete(request.getId());
+    }
+
+    //Remover um endereço de um contato da agenda.
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void deleteAddress(Long id, AddressRequest request) {
+        Contact contact = contactRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Resource not found"));
+        addressService.delete(request.getId());
     }
 }

@@ -32,8 +32,8 @@ public class AddressService {
     }
 
     @Transactional(readOnly = true)
-    public Page<AddressResponse> findAll(String publicPlace, Pageable pageable) {
-        Page<Address> result = addressRepository.searchByStreet(publicPlace, pageable);
+    public Page<AddressResponse> findAll(Pageable pageable) {
+        Page<Address> result = addressRepository.findAll(pageable);
         return result.map(x -> new AddressResponse(x));
     }
 
@@ -51,6 +51,7 @@ public class AddressService {
         }
     }
 
+    //Atualizar os dados de um endereço.
     @Transactional
     public AddressResponse update(Long id, AddressRequest dto) {
         try {

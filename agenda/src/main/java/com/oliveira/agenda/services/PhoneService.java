@@ -32,8 +32,8 @@ public class PhoneService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PhoneResponse> findAll(Integer phoneNumber, Pageable pageable) {
-        Page<Phone> result = phoneRepository.searchByPhoneNumber(phoneNumber, pageable);
+    public Page<PhoneResponse> findAll(Pageable pageable) {
+        Page<Phone> result = phoneRepository.findAll(pageable);
         return result.map(x -> new PhoneResponse(x));
     }
 
@@ -51,6 +51,7 @@ public class PhoneService {
         }
     }
 
+    //Atualizar os dados de um telefone.
     @Transactional
     public PhoneResponse update(Long id, PhoneRequest dto) {
         try {

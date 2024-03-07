@@ -5,6 +5,8 @@ import jakarta.validation.constraints.*;
 
 public class AddressRequest {
 
+    private Long id;
+
     @NotNull(message = "Required field")
     @Positive(message = "The zip code must be positive")
     private Long zipCode;
@@ -25,7 +27,8 @@ public class AddressRequest {
     @NotBlank(message = "State must have at least 2 characters")
     private String state;
 
-    public AddressRequest(Long zipCode, String street, Integer addressNumber, String city, String state) {
+    public AddressRequest(Long id, Long zipCode, String street, Integer addressNumber, String city, String state) {
+        this.id = id;
         this.zipCode = zipCode;
         this.street = street;
         this.addressNumber = addressNumber;
@@ -34,11 +37,20 @@ public class AddressRequest {
     }
 
     public AddressRequest(Address entity) {
+        id = entity.getId();
         zipCode = entity.getZipCode();
         street = entity.getStreet();
         addressNumber = entity.getAddressNumber();
         city = entity.getCity();
         state = entity.getState();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getZipCode() {

@@ -23,23 +23,18 @@ public class PhoneController {
         return ResponseEntity.ok(dto);
     }
 
+    //Exibir a lista de telefones com paginação. Incluindo a opção para navegar
+    //para a página seguinte ou página anterior.
     @GetMapping
-    public ResponseEntity<Page<PhoneResponse>> findAll(
-            @RequestParam(required = false) Integer phoneNumber,
-            Pageable pageable) {
-        Page<PhoneResponse> dto = phoneService.findAll(phoneNumber, pageable);
+    public ResponseEntity<Page<PhoneResponse>> findAll(Pageable pageable) {
+        Page<PhoneResponse> dto = phoneService.findAll(pageable);
         return ResponseEntity.ok(dto);
     }
 
+    //Atualizar os dados de um telefone.
     @PutMapping(value = "/{id}")
     public ResponseEntity<PhoneResponse> update(@PathVariable Long id, @Valid @RequestBody PhoneRequest request) {
         var dto = phoneService.update(id, request);
         return ResponseEntity.ok(dto);
-    }
-
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        phoneService.delete(id);
-        return ResponseEntity.noContent().build();
     }
 }

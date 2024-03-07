@@ -23,23 +23,18 @@ public class AddressController {
         return ResponseEntity.ok(dto);
     }
 
+    //Exibir a lista de endereços com paginação. Incluindo a opção para
+    //navegar para a página seguinte ou página anterior.
     @GetMapping
-    public ResponseEntity<Page<AddressResponse>> findAll(
-            @RequestParam(name = "name", defaultValue = "") String name,
-            Pageable pageable) {
-        Page<AddressResponse> dto = addressService.findAll(name, pageable);
+    public ResponseEntity<Page<AddressResponse>> findAll(Pageable pageable) {
+        Page<AddressResponse> dto = addressService.findAll(pageable);
         return ResponseEntity.ok(dto);
     }
 
+    //Atualizar os dados de um endereço.
     @PutMapping(value = "/{id}")
     public ResponseEntity<AddressResponse> update(@PathVariable Long id, @Valid @RequestBody AddressRequest request) {
         var dto = addressService.update(id, request);
         return ResponseEntity.ok(dto);
-    }
-
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        addressService.delete(id);
-        return ResponseEntity.noContent().build();
     }
 }
